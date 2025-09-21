@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS expense (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    price FLOAT(10,2) NOT NULL,
+    parcels INT DEFAULT 1,
+    datePayment DATETIME NOT NULL,
+    intermediary TINYINT DEFAULT 0,
+    maturity DATE NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    payee_id BIGINT UNSIGNED,
+    FOREIGN KEY (payee_id) REFERENCES user(id)
+);
