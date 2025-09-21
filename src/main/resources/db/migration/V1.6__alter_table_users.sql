@@ -1,0 +1,3 @@
+ALTER TABLE user
+    MODIFY COLUMN email VARCHAR(255) NOT NULL,
+    ADD UNIQUE (email)
