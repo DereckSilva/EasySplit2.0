@@ -1,5 +1,6 @@
 package com.easy_split.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -7,6 +8,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -17,10 +20,13 @@ import java.util.Date;
 public class Person {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private Date birthdate;
 
     @CreationTimestamp
@@ -29,8 +35,17 @@ public class Person {
     @UpdateTimestamp
     private LocalDateTime updated_at;
 
+    public Person(String name, Date birthDate) {
+        this.name = name;
+        this.birthdate = birthDate;
+    }
+
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "payee", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<Expense> expenses = new HashSet<>();
 
 }

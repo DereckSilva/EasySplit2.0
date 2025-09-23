@@ -19,15 +19,28 @@ import java.util.List;
 public class Expense {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false, scale = 2)
     private Double price;
+
+    @Column(nullable = false)
     private Integer parcels;
+
+    @Column(nullable = false)
     private Boolean intermediary;
+
+    @Column(nullable = false)
     private Date maturity;
+
+    @Column(nullable = false)
     private Boolean paid;
+
+    @Column(nullable = false)
     private LocalDateTime datePayment;
 
     @CreationTimestamp
@@ -39,7 +52,6 @@ public class Expense {
     private List<String> intermediarys;
 
     @ManyToOne
-    @JoinColumn(name = "payee_id", nullable = false)
     private Person payee;
 
 }

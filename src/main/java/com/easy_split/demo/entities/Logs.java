@@ -23,6 +23,8 @@ public class Logs {
 
     @CreationTimestamp
     private LocalDateTime created_at;
+
+    @Enumerated(EnumType.STRING)
     private Action action;
 
     @OneToOne
