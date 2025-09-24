@@ -33,7 +33,7 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToOne
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "person_id", unique = true)
     private Person person;
 
     public User(String email, String password, Role role) {
