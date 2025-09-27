@@ -8,11 +8,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
     @Autowired
     public UserRepository userRepository;
+
+    public Optional<User> getUserById(int id) {
+        return this.userRepository.findById(id);
+    }
 
     public User createUser(User user, Person person) {
         String passwordEncrypted = new BCryptPasswordEncoder().encode(user.getPassword());
@@ -24,4 +30,10 @@ public class UserService {
     public UserDetails getUserByEmail(String email) {
         return this.userRepository.findByEmail(email);
     }
+
+    public User userUpdated(User user) {
+        if (user.getPassword() != null) user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        return this.userRepository.save(user);
+    }
+
 }

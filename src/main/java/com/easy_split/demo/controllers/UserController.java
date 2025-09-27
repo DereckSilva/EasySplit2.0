@@ -2,6 +2,7 @@ package com.easy_split.demo.controllers;
 
 import com.easy_split.demo.dtos.requests.PersonRequestDTO;
 import com.easy_split.demo.dtos.requests.UserRequestDTO;
+import com.easy_split.demo.dtos.requests.UserRequestUpdatedDTO;
 import com.easy_split.demo.entities.Person;
 import com.easy_split.demo.entities.User;
 import com.easy_split.demo.mappers.PersonMapper;
@@ -11,10 +12,7 @@ import com.easy_split.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,5 +47,25 @@ public class UserController {
         mapperUserPerson.put("person", PersonMapper.toDTO(newPerson));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(mapperUserPerson);
+    }
+
+    @PostMapping("/updated")
+    public ResponseEntity updated(@RequestBody UserRequestUpdatedDTO user) {
+
+        Map<String, Object> userNotFound = new HashMap<>();
+        userNotFound.put("message", "User not found");
+
+        if (this.userService.getUserById(user.id()).isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(userNotFound);
+
+        User userFounded = UserMapper.toEntityUp(user);
+        User userUpdated = this.userService.userUpdated(userFounded);
+
+        return ResponseEntity.status(HttpStatus.OK).body(UserMapper.toDTOUp(userUpdated));
+    }
+
+    @PostMapping("/user/{id}")
+    public ResponseEntity findUser(@PathVariable int id) {
+        User user = this.userService.getUserById(id).get();
+        return ResponseEntity.status(HttpStatus.OK).body(UserMapper.toDTO(user));
     }
 }
