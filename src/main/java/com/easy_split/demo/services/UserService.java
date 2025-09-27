@@ -3,6 +3,7 @@ package com.easy_split.demo.services;
 import com.easy_split.demo.entities.Person;
 import com.easy_split.demo.entities.User;
 import com.easy_split.demo.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +16,9 @@ public class UserService {
 
     @Autowired
     public UserRepository userRepository;
+
+    @Autowired
+    public PersonService personService;
 
     public Optional<User> getUserById(int id) {
         return this.userRepository.findById(id);
@@ -33,7 +37,16 @@ public class UserService {
 
     public User userUpdated(User user) {
         if (user.getPassword() != null) user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        if (user.getPerson() != null) user.setPerson(user.getPerson());
         return this.userRepository.save(user);
+    }
+
+    @Transactional
+    public Optional userRemoved(User user) {
+        Person person = user.getPerson();
+        this.personService.removePerson(person);
+        this.userRepository.delete(user);
+        return Optional.empty();
     }
 
 }

@@ -1,9 +1,10 @@
 package com.easy_split.demo.exceptions;
 
-import org.apache.coyote.Response;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -27,6 +28,15 @@ public class GlobalCustomException {
         db.put("message", "Error in database: " + exception.getLocalizedMessage());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(db);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> methodArgumentNotValid (MethodArgumentNotValidException exception) {
+        Map<String, String> validationError = new HashMap<>();
+        exception.getBindingResult().getAllErrors().forEach((error) -> {
+            validationError.put(((FieldError) error).getField(), error.getDefaultMessage());
+        });
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationError);
     }
 
 }

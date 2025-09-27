@@ -21,13 +21,13 @@ public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
-    private Date birthdate;
+    private LocalDateTime birthdate;
 
     @CreationTimestamp
     private LocalDateTime created_at;
@@ -35,7 +35,7 @@ public class Person {
     @UpdateTimestamp
     private LocalDateTime updated_at;
 
-    public Person(String name, Date birthDate) {
+    public Person(String name, LocalDateTime birthDate) {
         this.name = name;
         this.birthdate = birthDate;
     }
@@ -45,7 +45,7 @@ public class Person {
     private User user;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "payee", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "payee", fetch = FetchType.LAZY)
     private Set<Expense> expenses = new HashSet<>();
 
 }

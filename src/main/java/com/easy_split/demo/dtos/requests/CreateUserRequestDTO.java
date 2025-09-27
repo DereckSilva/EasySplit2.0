@@ -1,0 +1,41 @@
+package com.easy_split.demo.dtos.requests;
+
+import com.easy_split.demo.enums.Role;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.*;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+import java.util.Date;
+
+@Data
+public class CreateUserRequestDTO {
+
+    @NotNull(message = "Email is required")
+    @NotEmpty(message = "Email can't be empty")
+    @Email(message = "Email is invalid")
+    private String email;
+
+    @NotNull(message = "Password is required")
+    @NotEmpty(message = "Password can't be empty")
+    @Size(min = 8, max = 16)
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+            message = "Password must contain at least one letter, one number, one special character, and be at least 8 characters long")
+    private String password;
+
+    @NotNull(message = "Role is required")
+    private Role role;
+
+    @NotNull(message = "Name is required")
+    @NotEmpty(message = "Name can't be empty")
+    private String name;
+
+    @NotNull(message = "Birthdate is required")
+    private LocalDateTime birthdate;
+
+    public CreateUserRequestDTO(String email, String password, Role role) {
+        this.email    = email;
+        this.password = password;
+        this.role     = role;
+    }
+}
