@@ -8,7 +8,9 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -40,18 +42,18 @@ public class Expense {
     @Column(nullable = false)
     private Boolean paid;
 
-    @Column(nullable = false)
-    private LocalDateTime datePayment;
-
     @CreationTimestamp
     private LocalDateTime created_at;
 
     @UpdateTimestamp
     private LocalDateTime updated_at;
 
+    // change here
     private List<String> intermediarys;
 
     @ManyToOne
     private Person payee;
 
+    @OneToMany(mappedBy = "expense", fetch = FetchType.LAZY)
+    private Set<Payments> payments = new HashSet<>();
 }

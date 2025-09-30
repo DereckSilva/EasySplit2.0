@@ -21,7 +21,7 @@ public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false)
     private String name;
@@ -47,5 +47,8 @@ public class Person {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "payee", fetch = FetchType.LAZY)
     private Set<Expense> expenses = new HashSet<>();
+
+    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+    private Set<Payments> payments = new HashSet<>();
 
 }

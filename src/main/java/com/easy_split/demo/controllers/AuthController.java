@@ -19,6 +19,8 @@ public class AuthController {
     @Autowired
     public AuthenticationManager  authenticationManager;
     @Autowired
+    public AuthenticationService authenticationService;
+    @Autowired
     public TokenService  tokenService;
 
     @PostMapping("/login")
