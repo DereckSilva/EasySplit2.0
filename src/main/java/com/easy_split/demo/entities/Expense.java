@@ -49,7 +49,7 @@ public class Expense {
     private LocalDateTime updated_at;
 
     // change here
-    private List<String> intermediarys;
+    private List<String> intermediaries;
 
     @ManyToOne
     private Person payee;

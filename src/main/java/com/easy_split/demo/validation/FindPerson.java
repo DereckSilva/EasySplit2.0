@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {FindPersonValidation.class})
 public @interface FindPerson {
-    String message() default "That person don't exist";
+    String message() default "Person don't exist or person don't informed";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
