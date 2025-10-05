@@ -25,17 +25,17 @@ public class CreateUserRequestDTO {
     private String password;
 
     @NotNull(message = "Role is required")
-    private Role role;
+    @Pattern(regexp = "ADMIN|USER", message = "Role must be ADMIN or USER")
+    private String role;
 
     @NotNull(message = "Name is required")
     @NotEmpty(message = "Name can't be empty")
     private String name;
 
-    @NotNull(message = "Birthdate is required")
     @Age
     private LocalDateTime birthdate;
 
-    public CreateUserRequestDTO(String email, String password, Role role) {
+    public CreateUserRequestDTO(String email, String password, String role) {
         this.email    = email;
         this.password = password;
         this.role     = role;

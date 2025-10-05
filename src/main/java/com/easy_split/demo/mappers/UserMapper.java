@@ -5,11 +5,12 @@ import com.easy_split.demo.dtos.requests.UpdatedUserDTO;
 import com.easy_split.demo.dtos.response.UserResponseDTO;
 import com.easy_split.demo.dtos.response.UserResponseUpdatedDTO;
 import com.easy_split.demo.entities.User;
+import com.easy_split.demo.enums.Role;
 
 public class UserMapper {
 
     public static User toEntity(CreateUserRequestDTO userRequestDTO) {
-        return new User(userRequestDTO.getEmail(), userRequestDTO.getPassword(), userRequestDTO.getRole());
+        return new User(userRequestDTO.getEmail(), userRequestDTO.getPassword(), Role.valueOf(userRequestDTO.getRole()));
     }
 
     public static UserResponseDTO toDTO(User user) {

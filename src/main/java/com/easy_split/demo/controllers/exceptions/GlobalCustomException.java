@@ -1,8 +1,9 @@
-package com.easy_split.demo.exceptions;
+package com.easy_split.demo.controllers.exceptions;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,7 +18,7 @@ public class GlobalCustomException {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> illegalArgument (IllegalArgumentException exception) {
         Map<String, String> map = new HashMap<>();
-        map.put("message", "Illegal Argument: " +  exception.getLocalizedMessage());
+        map.put("message", "Illegal Argument: " +  exception.getMessage());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
     }
@@ -25,7 +26,7 @@ public class GlobalCustomException {
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<Map<String, String>> errorDataBase (DataAccessException exception) {
         Map<String, String> db = new HashMap<>();
-        db.put("message", "Error in database: " + exception.getLocalizedMessage());
+        db.put("message", "Error in database: " + exception.getMessage());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(db);
     }
@@ -37,6 +38,20 @@ public class GlobalCustomException {
             validationError.put(((FieldError) error).getField(), error.getDefaultMessage());
         });
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationError);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<Map<String, String>> nullPointerException (NullPointerException exception) {
+        Map<String, String> validationError = new HashMap<>();
+        validationError.put("message", "Null Pointer Exception " + exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationError);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, String>> httpMessageNotReadableException (HttpMessageNotReadableException exception) {
+        Map<String, String> httpMessage = new HashMap<>();
+        httpMessage.put("message", "Message from JSON error detected: " + exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpMessage);
     }
 
 }
