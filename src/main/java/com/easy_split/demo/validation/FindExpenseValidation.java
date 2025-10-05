@@ -1,13 +1,10 @@
 package com.easy_split.demo.validation;
 
-import com.easy_split.demo.entities.Expense;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
-
-public class FindExpenseValidation implements ConstraintValidator<FindException, Integer> {
+public class FindExpenseValidation implements ConstraintValidator<FindExpense, Integer> {
 
     @Autowired
     //ExpenseService expenseService;

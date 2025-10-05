@@ -1,34 +1,23 @@
 package com.easy_split.demo.dtos.requests;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.NotEmpty;
+import com.easy_split.demo.validation.FindExpense;
+import com.easy_split.demo.validation.FindPerson;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class CreatePaymentRequestDTO {
 
+    @FindPerson
+    private Integer person_id;
 
-    @NotNull(message = "Description is required")
-    @NotEmpty(message = "Description can't be null")
-    private String description;
-
-    @NotNull(message = "Price is required")
-    private Double price;
-
-    @NotNull(message = "Parcels is required")
-    private Integer parcels;
+    @FindExpense
+    private Integer expense_id;
 
     private Boolean intermediary;
 
-    @Valid
-    private IntermediariesRequestDTO intermediaries;
+    @NotNull(message = "Total paid is required")
+    private Double totalPaid;
 
-    @AssertTrue(message = "People who's shared this expense is required and intermediary needs of value")
-    public boolean isIntermediariesValid() {
-        if (intermediary == null) return false;
-        if (intermediary && intermediaries == null) return false;
-        return true;
-    }
+    private Integer parcelNumber;
 }

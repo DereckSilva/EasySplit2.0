@@ -1,4 +1,4 @@
-package com.easy_split.demo.controllers;
+package com.easy_split.demo.controllers.auth;
 
 import com.easy_split.demo.dtos.requests.AuthResquestDTO;
 import com.easy_split.demo.dtos.response.AuthResponseDTO;

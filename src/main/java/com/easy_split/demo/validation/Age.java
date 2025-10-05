@@ -8,11 +8,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.FIELD})
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {FindPersonValidation.class})
-public @interface FindException {
-    String message() default "That expense don't exist";
+@Constraint(validatedBy = {AgeValidation.class})
+public @interface Age {
+    String message() default "User has less than 18 years old";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

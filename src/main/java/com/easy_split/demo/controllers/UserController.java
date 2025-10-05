@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/user")
 public class UserController {
 
@@ -30,12 +31,10 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity register(@Valid @RequestBody CreateUserRequestDTO user) {
 
-        Map<String,Object> badReqRes = new HashMap<>();
-        badReqRes.put("message", "User already exists");
 
-        Map<String, Object> userFounded = new HashMap<>();
-        userFounded.put("data", badReqRes);
-        if (this.userService.getUserByEmail(user.getEmail()) != null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userFounded);
+        Map<String,Object> badReqRes = new HashMap<>();
+        badReqRes.put("message", "Users already exists");
+        if (this.userService.getUserByEmail(user.getEmail()) != null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(badReqRes);
 
         PersonRequestDTO person = new PersonRequestDTO(user.getName(), user.getBirthdate());
         Person newPerson        = this.personService.createPerson(PersonMapper.toEntity(person));

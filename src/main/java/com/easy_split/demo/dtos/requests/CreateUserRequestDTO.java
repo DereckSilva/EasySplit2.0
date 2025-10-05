@@ -1,6 +1,7 @@
 package com.easy_split.demo.dtos.requests;
 
 import com.easy_split.demo.enums.Role;
+import com.easy_split.demo.validation.Age;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -31,6 +32,7 @@ public class CreateUserRequestDTO {
     private String name;
 
     @NotNull(message = "Birthdate is required")
+    @Age
     private LocalDateTime birthdate;
 
     public CreateUserRequestDTO(String email, String password, Role role) {
