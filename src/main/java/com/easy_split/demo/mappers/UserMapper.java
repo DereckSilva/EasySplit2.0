@@ -1,7 +1,7 @@
 package com.easy_split.demo.mappers;
 
-import com.easy_split.demo.dtos.requests.CreateUserRequestDTO;
-import com.easy_split.demo.dtos.requests.UpdatedUserDTO;
+import com.easy_split.demo.dtos.requests.person_user.CreateUserRequestDTO;
+import com.easy_split.demo.dtos.requests.person_user.UpdatedUserDTO;
 import com.easy_split.demo.dtos.response.UserResponseDTO;
 import com.easy_split.demo.dtos.response.UserResponseUpdatedDTO;
 import com.easy_split.demo.entities.User;

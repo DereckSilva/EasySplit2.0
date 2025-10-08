@@ -1,13 +1,10 @@
-package com.easy_split.demo.dtos.requests;
+package com.easy_split.demo.dtos.requests.person_user;
 
-import com.easy_split.demo.enums.Role;
 import com.easy_split.demo.validation.Age;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 public class CreateUserRequestDTO {

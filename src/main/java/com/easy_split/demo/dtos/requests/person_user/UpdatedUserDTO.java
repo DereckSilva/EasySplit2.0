@@ -1,4 +1,4 @@
-package com.easy_split.demo.dtos.requests;
+package com.easy_split.demo.dtos.requests.person_user;
 
 import com.easy_split.demo.enums.Role;
 import jakarta.validation.constraints.*;

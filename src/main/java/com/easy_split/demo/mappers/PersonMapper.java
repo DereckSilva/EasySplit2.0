@@ -1,6 +1,6 @@
 package com.easy_split.demo.mappers;
 
-import com.easy_split.demo.dtos.requests.PersonRequestDTO;
+import com.easy_split.demo.dtos.requests.person_user.PersonRequestDTO;
 import com.easy_split.demo.dtos.response.PersonResponseDTO;
 import com.easy_split.demo.entities.Person;
 

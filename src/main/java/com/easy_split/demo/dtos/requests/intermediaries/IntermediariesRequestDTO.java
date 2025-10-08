@@ -1,4 +1,4 @@
-package com.easy_split.demo.dtos.requests;
+package com.easy_split.demo.dtos.requests.intermediaries;
 
 import com.easy_split.demo.validation.FindPerson;
 import jakarta.validation.constraints.NotNull;

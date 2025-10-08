@@ -1,4 +1,4 @@
-package com.easy_split.demo.dtos.requests;
+package com.easy_split.demo.dtos.requests.payments;
 
 import com.easy_split.demo.validation.FindExpense;
 import com.easy_split.demo.validation.FindPerson;

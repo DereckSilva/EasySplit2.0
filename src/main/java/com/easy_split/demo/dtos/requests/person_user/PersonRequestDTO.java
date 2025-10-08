@@ -1,11 +1,10 @@
-package com.easy_split.demo.dtos.requests;
+package com.easy_split.demo.dtos.requests.person_user;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 public class PersonRequestDTO {

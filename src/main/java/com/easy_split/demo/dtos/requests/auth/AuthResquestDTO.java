@@ -1,4 +1,4 @@
-package com.easy_split.demo.dtos.requests;
+package com.easy_split.demo.dtos.requests.auth;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;

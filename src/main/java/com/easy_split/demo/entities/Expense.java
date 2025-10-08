@@ -1,13 +1,13 @@
 package com.easy_split.demo.entities;
 
+import com.easy_split.demo.dtos.requests.intermediaries.IntermediariesDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,7 +37,7 @@ public class Expense {
     private Boolean intermediary;
 
     @Column(nullable = false)
-    private Date maturity;
+    private LocalDate maturity;
 
     @Column(nullable = false)
     private Boolean paid;
@@ -48,12 +48,22 @@ public class Expense {
     @UpdateTimestamp
     private LocalDateTime updated_at;
 
-    // change here
-    private List<String> intermediaries;
+    private List<IntermediariesDTO> intermediaries;
 
     @ManyToOne
     private Person payee;
 
     @OneToMany(mappedBy = "expense", fetch = FetchType.LAZY)
     private Set<Payments> payments = new HashSet<>();
+
+
+    public Expense(String name, Double price, Integer parcels, Boolean intermediary, LocalDate maturity, Boolean paid, Person payee) {
+        this.name = name;
+        this.price = price;
+        this.parcels = parcels;
+        this.intermediary = intermediary;
+        this.maturity = maturity;
+        this.paid = paid;
+        this.payee = payee;
+    }
 }
