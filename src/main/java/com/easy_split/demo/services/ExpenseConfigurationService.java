@@ -22,13 +22,13 @@ public class ExpenseConfigurationService {
     public ExpenseService expenseService;
 
     public CreateExpenseDTO configExpense(CreateExpenseRequestDTO createExpenseRequestDTO) {
-        Person person = this.personService.getPersonById(createExpenseRequestDTO.getPayeeId()).get();
+        Person person = this.personService.getPersonById(createExpenseRequestDTO.getPayee()).get();
         return new CreateExpenseDTO(
                 createExpenseRequestDTO.getName(),
                 createExpenseRequestDTO.getPrice(),
                 createExpenseRequestDTO.getParcels(),
                 createExpenseRequestDTO.getIntermediary(),
-                defineMaturity(createExpenseRequestDTO.getParcels()),
+                LocalDate.now().plusMonths(createExpenseRequestDTO.getParcels()),
                 createExpenseRequestDTO.getPaid() != null,
                 person,
                 this.findAllIntermediaries(createExpenseRequestDTO)
@@ -36,14 +36,12 @@ public class ExpenseConfigurationService {
     }
 
     private List<IntermediariesDTO> findAllIntermediaries(CreateExpenseRequestDTO createExpenseRequestDTO) {
+        Integer totalIntermediaries = createExpenseRequestDTO.getIntermediaries().size();
         return createExpenseRequestDTO.getIntermediaries().stream().map(intermediariesDTO -> new IntermediariesDTO(
-                this.personService.getPersonById(intermediariesDTO.getPerson_id()).get(),
-                intermediariesDTO.getPrice()
+                this.personService.getPersonById(intermediariesDTO.getPerson()).get(),
+                !intermediariesDTO.priceIsValid() ? createExpenseRequestDTO.getPrice() / totalIntermediaries : intermediariesDTO.getPrice()
         )).toList();
     }
 
-    private LocalDate defineMaturity(Integer parcels) {
-        if (parcels == 1) return LocalDate.now();
-        return LocalDate.now().plusMonths(parcels);
-    }
+
 }

@@ -31,6 +31,10 @@ public class PersonService {
         return this.personRepository.findById(id);
     }
 
+    public Optional<Person> getPersonByEmail(String email) { return this.personRepository.findByEmail(email); }
+
+    public Optional<Person> getPersonByEmailOrId(String identifier) { return this.personRepository.findByEmailOrId(identifier); }
+
     @Transactional
     public Optional removePerson(Person person) {
         this.personRepository.delete(person);

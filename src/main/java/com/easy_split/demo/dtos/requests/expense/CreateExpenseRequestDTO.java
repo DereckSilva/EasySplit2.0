@@ -25,6 +25,12 @@ public class CreateExpenseRequestDTO {
     @NotNull(message = "Parcels is required")
     private Integer parcels;
 
+    @AssertTrue(message = "Parcels must be more than 0 and must be a number")
+    public boolean parcelsValid() {
+        if (parcels <= 0) return false;
+        return true;
+    }
+
     private Boolean intermediary;
 
     private LocalDate maturity;
@@ -32,7 +38,7 @@ public class CreateExpenseRequestDTO {
     private Boolean paid;
 
     @FindPerson
-    private Integer payeeId;
+    private Integer payee;
 
     @Valid
     private List<IntermediariesRequestDTO> intermediaries;

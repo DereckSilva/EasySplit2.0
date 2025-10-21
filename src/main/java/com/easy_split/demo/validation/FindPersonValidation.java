@@ -8,16 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
-public class FindPersonValidation implements ConstraintValidator<FindPerson, Integer> {
+public class FindPersonValidation implements ConstraintValidator<FindPerson, String> {
 
     @Autowired
     PersonService personService;
 
     @Override
-    public boolean isValid(Integer personId, ConstraintValidatorContext constraintValidatorContext) {
-        if (personId == null) return false;
-        Optional<Person> person = this.personService.getPersonById(personId);
-        if (person.isEmpty()) return false;
+    public boolean isValid(String person, ConstraintValidatorContext constraintValidatorContext) {
+        if (person == null) return false;
+        Optional<Person> foundedPerson = this.personService.getPersonByEmailOrId(person);
+        if (foundedPerson.isEmpty()) return false;
         return true;
     }
 }
