@@ -1,7 +1,9 @@
 package com.easy_split.demo.validation;
 
 import com.easy_split.demo.entities.Person;
+import com.easy_split.demo.entities.User;
 import com.easy_split.demo.services.PersonService;
+import com.easy_split.demo.services.UserService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,9 @@ public class FindPersonValidation implements ConstraintValidator<FindPerson, Str
 
     @Autowired
     PersonService personService;
+
+    @Autowired
+    UserService userService;
 
     @Override
     public boolean isValid(String person, ConstraintValidatorContext constraintValidatorContext) {
@@ -24,7 +29,9 @@ public class FindPersonValidation implements ConstraintValidator<FindPerson, Str
 
     private boolean getPerson(String person) {
         if (person == null) return false;
-        Optional<Person> foundedPerson = this.personService.getPersonByEmailOrId(person);
-        return foundedPerson.isEmpty();
+
+        Optional<Person> foundedPerson = this.personService.getPersonById(Integer.parseInt(person));
+        Optional<User> foundedUser     = this.userService.getUserById(Integer.parseInt(person));
+        return foundedPerson.isEmpty() || foundedUser.isEmpty();
     }
 }

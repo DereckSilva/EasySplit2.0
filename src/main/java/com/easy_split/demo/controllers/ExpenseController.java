@@ -9,14 +9,24 @@ import com.easy_split.demo.entities.Expense;
 import com.easy_split.demo.entities.Payments;
 import com.easy_split.demo.entities.Person;
 import com.easy_split.demo.mappers.ExpenseMapper;
+import com.easy_split.demo.services.ExcelService;
 import com.easy_split.demo.services.ExpenseProcessingService;
 import com.easy_split.demo.services.ExpenseService;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.apache.poi.sl.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -29,6 +39,35 @@ public class ExpenseController {
 
     @Autowired
     public ExpenseProcessingService configurationExpenseService;
+
+    @Autowired
+    public ExcelService excelService;
+
+    @GetMapping("/export-excel")
+    public HttpServletResponse  exportExcelExpense( HttpServletResponse response) throws IOException {
+
+        String[] fieldsExpense = {"Expense ID", "Price", "Parcels", "Intermediary", "Maturity", "Paid", "Payee", "Intermediaries"};
+        String[] fieldsPayment = {"Person", "Expense", "Immediate Payment", "Total Payment", "Parcel Number"};
+        String[][] fields      = {fieldsExpense, fieldsPayment};
+        String[] sheets        = {"Expense", "Payments"};
+        XSSFWorkbook workBook = this.excelService.exportExcel(sheets, fields);
+
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=expense.xlsx");
+
+        ServletOutputStream outputStream = response.getOutputStream();
+        workBook.write(outputStream);
+        workBook.close();
+        outputStream.close();
+
+        return response;
+    }
+
+    @PostMapping("/upload-excel")
+    public String uploadExcelExpense(@RequestParam("file") MultipartFile file) {
+
+        return "salve";
+    }
 
     @PostMapping("/create")
     public String createExpense(@RequestBody @Valid CreateExpenseRequestDTO expenseRequestDTO){

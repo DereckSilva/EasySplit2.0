@@ -1,2 +1,2 @@
 ALTER TABLE expense
-    ADD COLUMN barcode VARCHAR(48)
+    ADD COLUMN barcode VARCHAR(48) UNIQUE;

@@ -1,6 +1,7 @@
 package com.easy_split.demo.entities;
 
 import com.easy_split.demo.dtos.requests.intermediaries.IntermediariesDTO;
+import com.easy_split.demo.dtos.requests.intermediaries.IntermediariesRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -48,16 +49,20 @@ public class Expense {
     @UpdateTimestamp
     private LocalDateTime updated_at;
 
-    private List<IntermediariesDTO> intermediaries;
+    private List<String> intermediaries;
 
     @ManyToOne
+    @JoinColumn(name = "payee_id")
     private Person payee;
+
+    @Column(nullable = false)
+    private String barcode;
 
     @OneToMany(mappedBy = "expense", fetch = FetchType.LAZY)
     private Set<Payments> payments = new HashSet<>();
 
 
-    public Expense(String name, Double price, Integer parcels, Boolean intermediary, LocalDate maturity, Boolean paid, Person payee) {
+    public Expense(String name, Double price, Integer parcels, Boolean intermediary, LocalDate maturity, Boolean paid, Person payee, String barcode) {
         this.name = name;
         this.price = price;
         this.parcels = parcels;
@@ -65,5 +70,6 @@ public class Expense {
         this.maturity = maturity;
         this.paid = paid;
         this.payee = payee;
+        this.barcode = barcode;
     }
 }

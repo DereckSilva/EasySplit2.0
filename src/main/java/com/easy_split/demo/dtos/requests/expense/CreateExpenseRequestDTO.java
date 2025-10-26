@@ -41,8 +41,10 @@ public class CreateExpenseRequestDTO {
     @FindPerson
     private String payee;
 
-    @Valid
     private List<IntermediariesRequestDTO> intermediaries;
+
+    @NotNull(message = "BarCode is required")
+    private String barCode;
 
     @AssertTrue(message = "People who's shared this expense is required and intermediary needs of value")
     public boolean isIntermediariesValid() {
@@ -51,7 +53,14 @@ public class CreateExpenseRequestDTO {
         return intermediaries != null;
     }
 
-    @Valid
+    @NotNull(message = "Create payment is required")
+    private boolean createPayment;
+
     private CreatePaymentRequestDTO payment;
+
+    @AssertTrue(message = "Payment is required when create payment is true")
+    public boolean isCreatePaymentValid() {
+        return createPayment && payment != null;
+    }
 
 }

@@ -20,12 +20,13 @@ public class ExpenseService {
         return this.expenseRepository.save(expense);
     }
 
-    public Optional<Expense> getExpense(Integer id) {
-        return this.expenseRepository.findById(id);
+    public Optional<Expense> getExpense(String identifier) {
+        if (identifier.matches("\\d+")) return this.expenseRepository.findById(Integer.parseInt(identifier));
+        return this.expenseRepository.findByBarcode(identifier);
     }
 
     public Map<String, Object> getAllExpenses(int personId) {
-        Expense expenses = this.expenseRepository.findByExpenseByPayeeId(personId);
+        Expense expenses = this.expenseRepository.findByPayeeId(personId);
 
         Map<String, Object> objExpense = new HashMap<>();
         objExpense.put("expenses", expenses);
@@ -34,7 +35,7 @@ public class ExpenseService {
     }
 
     public Map<String, Object> getExpenseByPayeeId(int payeeId, int expenseId) {
-        Expense expense = this.expenseRepository.findByPayeeIdAndExpenseId(payeeId, expenseId);
+        Expense expense = this.expenseRepository.findByPayeeIdAndId(payeeId, expenseId);
 
         Map<String, Object> objExpense = new HashMap<>();
         objExpense.put("expense", expense);

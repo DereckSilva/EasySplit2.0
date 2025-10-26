@@ -3,6 +3,7 @@ package com.easy_split.demo.services;
 import com.easy_split.demo.entities.Person;
 import com.easy_split.demo.entities.User;
 import com.easy_split.demo.repositories.PersonRepository;
+import com.easy_split.demo.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,10 +31,6 @@ public class PersonService {
     public Optional<Person> getPersonById(Integer id) {
         return this.personRepository.findById(id);
     }
-
-    public Optional<Person> getPersonByEmail(String email) { return this.personRepository.findByEmail(email); }
-
-    public Optional<Person> getPersonByEmailOrId(String identifier) { return this.personRepository.findByEmailOrId(identifier); }
 
     @Transactional
     public Optional removePerson(Person person) {

@@ -24,6 +24,8 @@ public class UserService {
         return this.userRepository.findById(id);
     }
 
+    public Optional<User> getUserEmail(String email) { return this.userRepository.findUserByEmail(email); }
+
     public User createUser(User user, Person person) {
         String passwordEncrypted = new BCryptPasswordEncoder().encode(user.getPassword());
         user.setPassword(passwordEncrypted);

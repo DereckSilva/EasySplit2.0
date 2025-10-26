@@ -29,6 +29,7 @@ public class SecurityConfiguration {
                     authorize.requestMatchers("/admin/**").hasRole("ADMIN")
                             .requestMatchers("/auth/login").permitAll()
                             .requestMatchers("/user/register").permitAll()
+                            .requestMatchers("/expense/export-excel").permitAll()
                             .anyRequest().authenticated()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

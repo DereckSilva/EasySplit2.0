@@ -3,11 +3,13 @@ package com.easy_split.demo.services;
 import com.easy_split.demo.dtos.requests.expense.CreateExpenseDTO;
 import com.easy_split.demo.dtos.requests.expense.CreateExpenseRequestDTO;
 import com.easy_split.demo.dtos.requests.intermediaries.IntermediariesDTO;
+import com.easy_split.demo.dtos.requests.intermediaries.IntermediariesRequestDTO;
 import com.easy_split.demo.dtos.requests.payments.CreatePaymentRequestDTO;
 import com.easy_split.demo.entities.Expense;
 import com.easy_split.demo.entities.Payments;
 import com.easy_split.demo.entities.Person;
 import com.easy_split.demo.enums.BankCode;
+import com.easy_split.demo.mappers.ExpenseMapper;
 import com.easy_split.demo.mappers.PaymentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,9 @@ public class ExpenseProcessingService {
     @Autowired
     public PaymentService paymentService;
 
+    @Autowired
+    public UserService userService;
+
     public CreateExpenseDTO configExpense(CreateExpenseRequestDTO createExpenseRequestDTO) {
         Person person = this.getPersonRelatedExpense(createExpenseRequestDTO.getPayee());
         return new CreateExpenseDTO(
@@ -36,13 +41,15 @@ public class ExpenseProcessingService {
                 LocalDate.now().plusMonths(createExpenseRequestDTO.getParcels()),
                 createExpenseRequestDTO.getPaid() != null,
                 person,
-                this.findAllIntermediaries(createExpenseRequestDTO)
+                this.findAllIntermediaries(createExpenseRequestDTO),
+                createExpenseRequestDTO.getBarCode()
         );
     }
 
-    private List<IntermediariesDTO> findAllIntermediaries(CreateExpenseRequestDTO createExpenseRequestDTO) {
+    private List<IntermediariesRequestDTO> findAllIntermediaries(CreateExpenseRequestDTO createExpenseRequestDTO) {
         Integer totalIntermediaries = createExpenseRequestDTO.getIntermediaries().size();
-        return createExpenseRequestDTO.getIntermediaries().stream().map(intermediariesDTO -> new IntermediariesDTO(
+
+        return createExpenseRequestDTO.getIntermediaries().stream().map(intermediariesDTO -> new IntermediariesRequestDTO(
                 this.getPersonRelatedExpense(intermediariesDTO.getPerson()),
                 !intermediariesDTO.priceIsValid() ? createExpenseRequestDTO.getPrice() / totalIntermediaries : intermediariesDTO.getPrice()
         )).toList();
@@ -55,7 +62,8 @@ public class ExpenseProcessingService {
     }
 
     public Person getPersonRelatedExpense(String person) {
-        return this.personService.getPersonByEmailOrId(person).get();
+        if (person.matches("\\d+")) return this.personService.getPersonById(Integer.parseInt(person)).get();
+        return this.userService.getUserEmail(person).get().getPerson();
     }
 
     public boolean barCodeIsValid(String barCode, LocalDate maturity, Double price) {

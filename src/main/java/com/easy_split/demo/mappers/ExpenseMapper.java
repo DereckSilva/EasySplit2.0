@@ -14,7 +14,8 @@ public class ExpenseMapper {
                 expenseRequestDTO.intermediary(),
                 expenseRequestDTO.maturity(),
                 expenseRequestDTO.paid(),
-                expenseRequestDTO.payee()
+                expenseRequestDTO.payee(),
+                expenseRequestDTO.barCode()
         );
     }
 
@@ -27,7 +28,6 @@ public class ExpenseMapper {
                 expense.getMaturity(),
                 expense.getPaid(),
                 expense.getPayee(),
-                expense.getIntermediaries(),
                 expense.getPayments().stream().toList()
         );
     }

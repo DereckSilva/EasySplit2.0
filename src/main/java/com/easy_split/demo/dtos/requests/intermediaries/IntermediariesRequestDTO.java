@@ -1,5 +1,6 @@
 package com.easy_split.demo.dtos.requests.intermediaries;
 
+import com.easy_split.demo.entities.Person;
 import com.easy_split.demo.validation.FindPerson;
 import com.easy_split.demo.validation.FindPersonValidation;
 import jakarta.validation.constraints.AssertTrue;
@@ -8,6 +9,8 @@ import lombok.Data;
 
 @Data
 public class IntermediariesRequestDTO {
+
+    public IntermediariesRequestDTO(Person person, Double price) {}
 
     private String person;
 
