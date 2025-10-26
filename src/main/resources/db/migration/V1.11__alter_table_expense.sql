@@ -1,0 +1,2 @@
+ALTER TABLE expense
+    ADD COLUMN barcode VARCHAR(48)

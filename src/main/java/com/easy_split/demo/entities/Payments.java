@@ -33,4 +33,13 @@ public class Payments {
     private Double totalPaid;
 
     private Integer numberParcel;
+
+    public Payments(Person person, Expense expense, Boolean intermediary, LocalDateTime datePayment, Double totalPaid, Integer numberParcel) {
+        this.person = person;
+        this.expense = expense;
+        this.intermediary = intermediary;
+        this.datePayment = datePayment;
+        this.totalPaid = totalPaid;
+        this.numberParcel = numberParcel;
+    }
 }

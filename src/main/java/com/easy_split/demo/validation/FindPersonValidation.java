@@ -15,9 +15,16 @@ public class FindPersonValidation implements ConstraintValidator<FindPerson, Str
 
     @Override
     public boolean isValid(String person, ConstraintValidatorContext constraintValidatorContext) {
+        return this.getPerson(person);
+    }
+
+    public boolean personIsValid(String person) {
+        return this.getPerson(person);
+    }
+
+    private boolean getPerson(String person) {
         if (person == null) return false;
         Optional<Person> foundedPerson = this.personService.getPersonByEmailOrId(person);
-        if (foundedPerson.isEmpty()) return false;
-        return true;
+        return foundedPerson.isEmpty();
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ExpenseService {
@@ -17,6 +18,10 @@ public class ExpenseService {
     public Expense createExpense(Expense expense) {
         expense.setPayee(expense.getPayee());
         return this.expenseRepository.save(expense);
+    }
+
+    public Optional<Expense> getExpense(Integer id) {
+        return this.expenseRepository.findById(id);
     }
 
     public Map<String, Object> getAllExpenses(int personId) {

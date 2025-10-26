@@ -4,9 +4,12 @@ import com.easy_split.demo.dtos.requests.expense.AllExpenseRequestDTO;
 import com.easy_split.demo.dtos.requests.expense.CreateExpenseDTO;
 import com.easy_split.demo.dtos.requests.expense.CreateExpenseRequestDTO;
 import com.easy_split.demo.dtos.requests.expense.ExpenseRequestDTO;
+import com.easy_split.demo.dtos.response.ExpenseResponseDTO;
 import com.easy_split.demo.entities.Expense;
+import com.easy_split.demo.entities.Payments;
+import com.easy_split.demo.entities.Person;
 import com.easy_split.demo.mappers.ExpenseMapper;
-import com.easy_split.demo.services.ExpenseConfigurationService;
+import com.easy_split.demo.services.ExpenseProcessingService;
 import com.easy_split.demo.services.ExpenseService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +28,18 @@ public class ExpenseController {
     public ExpenseService expenseService;
 
     @Autowired
-    public ExpenseConfigurationService configurationExpenseService;
+    public ExpenseProcessingService configurationExpenseService;
 
     @PostMapping("/create")
     public String createExpense(@RequestBody @Valid CreateExpenseRequestDTO expenseRequestDTO){
         CreateExpenseDTO createExpense = this.configurationExpenseService.configExpense(expenseRequestDTO);
         Expense expense = ExpenseMapper.toEntity(createExpense);
+        Expense createdExpense = expenseService.createExpense(expense);
+
+        // parcial
+        Payments payments = this.configurationExpenseService.configPayment(expense.getPayee(), createdExpense, expenseRequestDTO.getPayment());
+
+        ExpenseResponseDTO expenseResp = ExpenseMapper.toDTO(createdExpense);
 
         return "testee";
     }
@@ -43,7 +52,8 @@ public class ExpenseController {
 
     @GetMapping("/one")
     public ResponseEntity<Map<String, Object>> getExpenseByPayeeByExpense(@RequestBody @Valid ExpenseRequestDTO expense) {
-        Map<String, Object> findExpense = this.expenseService.getExpenseByPayeeId(expense.getPayeeId(), expense.getExpenseId());
+        Person payee = this.configurationExpenseService.getPersonRelatedExpense(expense.getPayee());
+        Map<String, Object> findExpense = this.expenseService.getExpenseByPayeeId(payee.getId(), expense.getExpenseId());
         return ResponseEntity.status(HttpStatus.OK).body(findExpense);
     }
 

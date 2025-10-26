@@ -1,6 +1,7 @@
 package com.easy_split.demo.dtos.requests.expense;
 
 import com.easy_split.demo.dtos.requests.intermediaries.IntermediariesRequestDTO;
+import com.easy_split.demo.dtos.requests.payments.CreatePaymentRequestDTO;
 import com.easy_split.demo.validation.FindPerson;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
@@ -38,7 +39,7 @@ public class CreateExpenseRequestDTO {
     private Boolean paid;
 
     @FindPerson
-    private Integer payee;
+    private String payee;
 
     @Valid
     private List<IntermediariesRequestDTO> intermediaries;
@@ -46,7 +47,11 @@ public class CreateExpenseRequestDTO {
     @AssertTrue(message = "People who's shared this expense is required and intermediary needs of value")
     public boolean isIntermediariesValid() {
         if (intermediary == null) return false;
-        if (intermediary && intermediaries == null) return false;
-        return true;
+        if (!intermediary) return false;
+        return intermediaries != null;
     }
+
+    @Valid
+    private CreatePaymentRequestDTO payment;
+
 }

@@ -8,7 +8,7 @@ import lombok.Data;
 public class ExpenseRequestDTO {
 
     @FindPerson
-    private Integer payeeId;
+    private String payee;
 
     @FindExpense
     private Integer expenseId;
