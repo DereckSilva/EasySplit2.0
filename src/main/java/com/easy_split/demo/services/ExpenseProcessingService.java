@@ -18,8 +18,7 @@ public class ExpenseConfigurationService {
     @Autowired
     public PersonService personService;
 
-    @Autowired
-    public ExpenseService expenseService;
+    @Autowired PaymentService paymentService;
 
     public CreateExpenseDTO configExpense(CreateExpenseRequestDTO createExpenseRequestDTO) {
         Person person = this.personService.getPersonById(createExpenseRequestDTO.getPayee()).get();
@@ -42,6 +41,8 @@ public class ExpenseConfigurationService {
                 !intermediariesDTO.priceIsValid() ? createExpenseRequestDTO.getPrice() / totalIntermediaries : intermediariesDTO.getPrice()
         )).toList();
     }
+
+    public
 
 
 }
