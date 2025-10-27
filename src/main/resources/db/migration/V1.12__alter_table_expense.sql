@@ -1,0 +1,2 @@
+ALTER TABLE payments
+    ADD COLUMN paid TINYINT DEFAULT 0;

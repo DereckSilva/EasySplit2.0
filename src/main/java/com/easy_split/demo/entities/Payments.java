@@ -34,12 +34,15 @@ public class Payments {
 
     private Integer numberParcel;
 
-    public Payments(Person person, Expense expense, Boolean intermediary, LocalDateTime datePayment, Double totalPaid, Integer numberParcel) {
+    private Boolean paid;
+
+    public Payments(Person person, Expense expense, Boolean intermediary, LocalDateTime datePayment, Double totalPaid, Integer numberParcel,  Boolean paid) {
         this.person = person;
         this.expense = expense;
         this.intermediary = intermediary;
         this.datePayment = datePayment;
         this.totalPaid = totalPaid;
         this.numberParcel = numberParcel;
+        this.paid = paid;
     }
 }

@@ -1,5 +1,6 @@
 package com.easy_split.demo.controllers;
 
+import com.easy_split.demo.controllers.error.CreateExpenseException;
 import com.easy_split.demo.dtos.requests.expense.AllExpenseRequestDTO;
 import com.easy_split.demo.dtos.requests.expense.CreateExpenseDTO;
 import com.easy_split.demo.dtos.requests.expense.CreateExpenseRequestDTO;
@@ -15,16 +16,11 @@ import com.easy_split.demo.services.ExpenseService;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.apache.poi.sl.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.io.IOException;
 import java.util.Map;
@@ -44,10 +40,10 @@ public class ExpenseController {
     public ExcelService excelService;
 
     @GetMapping("/export-excel")
-    public HttpServletResponse  exportExcelExpense( HttpServletResponse response) throws IOException {
+    public HttpServletResponse  exportExcelExpense(HttpServletResponse response) throws IOException {
 
-        String[] fieldsExpense = {"Expense ID", "Price", "Parcels", "Intermediary", "Maturity", "Paid", "Payee", "Intermediaries"};
-        String[] fieldsPayment = {"Person", "Expense", "Immediate Payment", "Total Payment", "Parcel Number"};
+        String[] fieldsExpense = {"Expense Identifier", "Name", "Price", "Parcels", "Intermediary", "Paid", "Maturity", "Payee", "Intermediaries"};
+        String[] fieldsPayment = {"Person", "Expense Identifier", "Total Payment", "Paid"};
         String[][] fields      = {fieldsExpense, fieldsPayment};
         String[] sheets        = {"Expense", "Payments"};
         XSSFWorkbook workBook = this.excelService.exportExcel(sheets, fields);
@@ -64,8 +60,11 @@ public class ExpenseController {
     }
 
     @PostMapping("/upload-excel")
-    public String uploadExcelExpense(@RequestParam("file") MultipartFile file) {
+    public String uploadExcelExpense(@RequestParam(value = "file", required = false) MultipartFile file)  throws IOException {
 
+        if (file == null) throw new CreateExpenseException("O parâmetro 'file' é obrigatório. Envie o arquivo com a chave 'file'.");
+
+        this.excelService.validExcelExpense(file);
         return "salve";
     }
 

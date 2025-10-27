@@ -7,6 +7,9 @@ import com.easy_split.demo.repositories.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class PaymentService {
 
@@ -17,5 +20,9 @@ public class PaymentService {
         payments.setExpense(expense);
         payments.setPerson(person);
         return this.paymentRepository.save(payments);
+    }
+
+    public Optional<List<Payments>> findByPaid(Boolean paid) {
+        return this.paymentRepository.findByPaid(paid);
     }
 }

@@ -1,5 +1,6 @@
 package com.easy_split.demo.controllers.exceptions;
 
+import com.easy_split.demo.controllers.error.CreateExpenseException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,5 +55,13 @@ public class GlobalCustomException {
         httpMessage.put("message", "Message from JSON error detected: " + exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpMessage);
     }
+
+    @ExceptionHandler(CreateExpenseException.class)
+    public ResponseEntity<Map<String, String>> createExpenseException (CreateExpenseException exception) {
+        Map<String, String> httpMessage = new HashMap<>();
+        httpMessage.put("message", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpMessage);
+    }
+
 
 }
