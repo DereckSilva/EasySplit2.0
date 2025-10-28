@@ -28,15 +28,21 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token   = this.recoveryToken(request);
-        if (token != null) {
-            String subject   = this.tokenService.getSubjectFromToken(token);
-            UserDetails user = this.userService.getUserByEmail(subject);
+        try {
+            String token   = this.recoveryToken(request);
+            if (token != null) {
+                String subject   = this.tokenService.getSubjectFromToken(token);
+                UserDetails user = this.userService.getUserByEmail(subject);
 
-            Authentication auth = new UsernamePasswordAuthenticationToken(user.getUsername(), null, user.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
+                Authentication auth = new UsernamePasswordAuthenticationToken(user.getUsername(), null, user.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+            filterChain.doFilter(request, response);
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json;charset=utf-8");
+            response.getWriter().write("Token expired OR not informed");
         }
-        filterChain.doFilter(request, response);
     }
 
     private String recoveryToken(HttpServletRequest request) {

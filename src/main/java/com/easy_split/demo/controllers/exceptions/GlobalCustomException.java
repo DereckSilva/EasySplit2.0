@@ -10,7 +10,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,7 +51,7 @@ public class GlobalCustomException {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, String>> httpMessageNotReadableException (HttpMessageNotReadableException exception) {
         Map<String, String> httpMessage = new HashMap<>();
-        httpMessage.put("message", "Message from JSON error detected: " + exception.getMessage());
+        httpMessage.put("message", "JSON necessário para processamento de informação");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpMessage);
     }
 
@@ -62,6 +61,5 @@ public class GlobalCustomException {
         httpMessage.put("message", exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpMessage);
     }
-
 
 }

@@ -22,9 +22,9 @@ public class FindExpenseValidation implements ConstraintValidator<FindExpense, S
         return this.getExpense(expenseIdent);
     }
 
-    private boolean getExpense(String expenseIdent) {
+    protected boolean getExpense(String expenseIdent) {
         if (expenseIdent == null) return false;
         Optional<Expense> expense = this.expenseService.getExpense(expenseIdent);
-        return expense.isEmpty();
+        return expense.isPresent();
     }
 }

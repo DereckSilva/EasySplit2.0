@@ -27,11 +27,10 @@ public class FindPersonValidation implements ConstraintValidator<FindPerson, Str
         return this.getPerson(person);
     }
 
-    private boolean getPerson(String person) {
+    protected boolean getPerson(String person) {
         if (person == null) return false;
 
-        Optional<Person> foundedPerson = this.personService.getPersonById(Integer.parseInt(person));
-        Optional<User> foundedUser     = this.userService.getUserById(Integer.parseInt(person));
-        return foundedPerson.isEmpty() || foundedUser.isEmpty();
+        if (person.matches("\\d+")) return this.personService.getPersonById(Integer.parseInt(person)).isPresent();
+        return this.userService.getUserEmail(person).isPresent();
     }
 }

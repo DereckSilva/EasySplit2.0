@@ -46,7 +46,7 @@ public class ExpenseController {
         String[] fieldsPayment = {"Person", "Expense Identifier", "Total Payment", "Paid"};
         String[][] fields      = {fieldsExpense, fieldsPayment};
         String[] sheets        = {"Expense", "Payments"};
-        XSSFWorkbook workBook = this.excelService.exportExcel(sheets, fields);
+        XSSFWorkbook workBook  = this.excelService.exportExcel(sheets, fields);
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=expense.xlsx");
@@ -64,7 +64,7 @@ public class ExpenseController {
 
         if (file == null) throw new CreateExpenseException("O parâmetro 'file' é obrigatório. Envie o arquivo com a chave 'file'.");
 
-        this.excelService.validExcelExpense(file);
+        this.expenseService.validExcelExpense(file);
         return "salve";
     }
 
@@ -84,7 +84,8 @@ public class ExpenseController {
 
     @GetMapping("/all")
     public ResponseEntity<Map<String, Object>> getAllExpensesByPayeeId(@RequestBody @Valid AllExpenseRequestDTO payee) {
-        Map<String, Object> expenses =  this.expenseService.getAllExpenses(payee.getPayeeId());
+        Person personPayee = this.configurationExpenseService.getPersonRelatedExpense(payee.getPayee());
+        Map<String, Object> expenses = this.expenseService.getAllExpenses(personPayee.getId());
         return ResponseEntity.status(HttpStatus.OK).body(expenses);
     }
 
