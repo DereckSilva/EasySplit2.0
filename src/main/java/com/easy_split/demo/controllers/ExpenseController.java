@@ -26,18 +26,19 @@ import java.io.IOException;
 import java.util.Map;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/expense")
 public class ExpenseController {
 
-    @Autowired
-    public ExpenseService expenseService;
+    private final ExpenseService expenseService;
+    private final ExpenseProcessingService expenseProcessingService;
+    private final ExcelService excelService;
 
     @Autowired
-    public ExpenseProcessingService configurationExpenseService;
-
-    @Autowired
-    public ExcelService excelService;
+    public ExpenseController(ExpenseService expenseService, ExpenseProcessingService configurationExpenseService, ExcelService excelService) {
+        this.expenseService = expenseService;
+        this.expenseProcessingService = configurationExpenseService;
+        this.excelService = excelService;
+    }
 
     @GetMapping("/export-excel")
     public HttpServletResponse  exportExcelExpense(HttpServletResponse response) throws IOException {
@@ -70,12 +71,12 @@ public class ExpenseController {
 
     @PostMapping("/create")
     public String createExpense(@RequestBody @Valid CreateExpenseRequestDTO expenseRequestDTO){
-        CreateExpenseDTO createExpense = this.configurationExpenseService.configExpense(expenseRequestDTO);
+        CreateExpenseDTO createExpense = this.expenseProcessingService.configExpense(expenseRequestDTO);
         Expense expense = ExpenseMapper.toEntity(createExpense);
         Expense createdExpense = expenseService.createExpense(expense);
 
         // parcial
-        Payments payments = this.configurationExpenseService.configPayment(expense.getPayee(), createdExpense, expenseRequestDTO.getPayment());
+        Payments payments = this.expenseProcessingService.configPayment(expense.getPayee(), createdExpense, expenseRequestDTO.getPayment());
 
         ExpenseResponseDTO expenseResp = ExpenseMapper.toDTO(createdExpense);
 
@@ -84,14 +85,14 @@ public class ExpenseController {
 
     @GetMapping("/all")
     public ResponseEntity<Map<String, Object>> getAllExpensesByPayeeId(@RequestBody @Valid AllExpenseRequestDTO payee) {
-        Person personPayee = this.configurationExpenseService.getPersonRelatedExpense(payee.getPayee());
+        Person personPayee = this.expenseProcessingService.getPersonRelatedExpense(payee.getPayee());
         Map<String, Object> expenses = this.expenseService.getAllExpenses(personPayee.getId());
         return ResponseEntity.status(HttpStatus.OK).body(expenses);
     }
 
     @GetMapping("/one")
     public ResponseEntity<Map<String, Object>> getExpenseByPayeeByExpense(@RequestBody @Valid ExpenseRequestDTO expense) {
-        Person payee = this.configurationExpenseService.getPersonRelatedExpense(expense.getPayee());
+        Person payee = this.expenseProcessingService.getPersonRelatedExpense(expense.getPayee());
         Map<String, Object> findExpense = this.expenseService.getExpenseByPayeeId(payee.getId(), expense.getExpenseId());
         return ResponseEntity.status(HttpStatus.OK).body(findExpense);
     }

@@ -16,8 +16,12 @@ import java.util.Optional;
 @Service
 public class PersonService {
 
+    private final PersonRepository personRepository;
+
     @Autowired
-    public PersonRepository personRepository;
+    public PersonService(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
 
     public Person createPerson(Person person) {
         return this.personRepository.save(person);

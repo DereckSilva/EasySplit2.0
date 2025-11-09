@@ -2,6 +2,7 @@ package com.easy_split.demo.services;
 
 import com.easy_split.demo.entities.Person;
 import com.easy_split.demo.entities.User;
+import com.easy_split.demo.repositories.PaymentRepository;
 import com.easy_split.demo.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,15 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired
-    public UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PersonService personService;
 
     @Autowired
-    public PersonService personService;
+    public UserService(UserRepository userRepository, PersonService personService) {
+        this.userRepository = userRepository;
+        this.personService = personService;
+    }
+
 
     public Optional<User> getUserById(int id) {
         return this.userRepository.findById(id);

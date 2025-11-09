@@ -16,10 +16,12 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalCustomException {
 
+    private final String message = "message";
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> illegalArgument (IllegalArgumentException exception) {
         Map<String, String> map = new HashMap<>();
-        map.put("message", "Illegal Argument: " +  exception.getMessage());
+        map.put(this.message, "Illegal Argument: " +  exception.getMessage());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
     }
@@ -27,7 +29,7 @@ public class GlobalCustomException {
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<Map<String, String>> errorDataBase (DataAccessException exception) {
         Map<String, String> db = new HashMap<>();
-        db.put("message", "Error in database: " + exception.getMessage());
+        db.put(this.message, "Error in database: " + exception.getMessage());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(db);
     }
@@ -44,21 +46,21 @@ public class GlobalCustomException {
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<Map<String, String>> nullPointerException (NullPointerException exception) {
         Map<String, String> validationError = new HashMap<>();
-        validationError.put("message", "Null Pointer Exception " + exception.getMessage());
+        validationError.put(this.message, "Null Pointer Exception " + exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationError);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, String>> httpMessageNotReadableException (HttpMessageNotReadableException exception) {
         Map<String, String> httpMessage = new HashMap<>();
-        httpMessage.put("message", "JSON necessário para processamento de informação");
+        httpMessage.put(this.message, "JSON necessário para processamento de informação");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpMessage);
     }
 
     @ExceptionHandler(CreateExpenseException.class)
     public ResponseEntity<Map<String, String>> createExpenseException (CreateExpenseException exception) {
         Map<String, String> httpMessage = new HashMap<>();
-        httpMessage.put("message", exception.getMessage());
+        httpMessage.put(this.message, exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpMessage);
     }
 

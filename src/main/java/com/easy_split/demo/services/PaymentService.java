@@ -13,8 +13,12 @@ import java.util.Optional;
 @Service
 public class PaymentService {
 
+    private final PaymentRepository paymentRepository;
+
     @Autowired
-    public PaymentRepository paymentRepository;
+    public PaymentService(PaymentRepository paymentRepository) {
+        this.paymentRepository = paymentRepository;
+    }
 
     public Payments createPayment(Person person, Expense expense, Payments payments) {
         payments.setExpense(expense);

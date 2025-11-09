@@ -20,15 +20,17 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    public UserService userService;
+    private final UserService userService;
+    private final PersonService personService;
 
     @Autowired
-    public PersonService personService;
+    public UserController(UserService userService, PersonService personService) {
+        this.userService = userService;
+        this.personService = personService;
+    }
 
     @PostMapping("/register")
     public ResponseEntity register(@Valid @RequestBody CreateUserRequestDTO user) {

@@ -19,8 +19,12 @@ import java.util.Optional;
 @Service
 public class ExpenseService {
 
+    private final ExpenseRepository expenseRepository;
+
     @Autowired
-    private ExpenseRepository expenseRepository;
+    public ExpenseService(ExpenseRepository expenseRepository) {
+        this.expenseRepository = expenseRepository;
+    }
 
     public Expense createExpense(Expense expense) {
         expense.setPayee(expense.getPayee());

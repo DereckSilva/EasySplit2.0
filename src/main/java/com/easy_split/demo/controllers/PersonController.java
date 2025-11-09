@@ -16,8 +16,12 @@ import java.util.Optional;
 @RequestMapping("/person")
 public class PersonController {
 
+    private final PersonService personService;
+
     @Autowired
-    private PersonService personService;
+    public PersonController(PersonService personService) {
+        this.personService = personService;
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity findUser(@PathVariable int id) {

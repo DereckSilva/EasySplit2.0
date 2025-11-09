@@ -22,14 +22,17 @@ import java.util.List;
 @Service
 public class ExpenseProcessingService {
 
-    @Autowired
-    public PersonService personService;
+    private final PersonService personService;
+    private final PaymentService paymentService;
+    private final UserService userService;
 
     @Autowired
-    public PaymentService paymentService;
+    public ExpenseProcessingService(PersonService personService, PaymentService paymentService, UserService userService) {
+        this.personService = personService;
+        this.paymentService = paymentService;
+        this.userService = userService;
+    }
 
-    @Autowired
-    public UserService userService;
 
     public CreateExpenseDTO configExpense(CreateExpenseRequestDTO createExpenseRequestDTO) {
         Person person = this.getPersonRelatedExpense(createExpenseRequestDTO.getPayee());
