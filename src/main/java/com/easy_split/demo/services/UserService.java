@@ -1,8 +1,8 @@
 package com.easy_split.demo.services;
 
+import com.easy_split.demo.controllers.error.FindUserException;
 import com.easy_split.demo.entities.Person;
 import com.easy_split.demo.entities.User;
-import com.easy_split.demo.repositories.PaymentRepository;
 import com.easy_split.demo.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +25,17 @@ public class UserService {
     }
 
 
-    public Optional<User> getUserById(int id) {
-        return this.userRepository.findById(id);
+    public User getUserById(int id) {
+        Optional<User> user =  this.userRepository.findById(id);
+        if (user.isEmpty()) throw new FindUserException("O usuário não foi encontrado");
+        return user.get();
     }
 
-    public Optional<User> getUserEmail(String email) { return this.userRepository.findUserByEmail(email); }
+    public User getUserEmail(String email) {
+        Optional<User> user = this.userRepository.findUserByEmail(email);
+        if (user.isEmpty()) throw new FindUserException("Nenhum usuário encontrado com esse email");
+        return user.get();
+    }
 
     public User createUser(User user, Person person) {
         String passwordEncrypted = new BCryptPasswordEncoder().encode(user.getPassword());
@@ -49,7 +55,7 @@ public class UserService {
     }
 
     @Transactional
-    public Optional userRemoved(User user) {
+    public Optional<Object> userRemoved(User user) {
         Person person = user.getPerson();
         this.personService.removePerson(person);
         this.userRepository.delete(user);

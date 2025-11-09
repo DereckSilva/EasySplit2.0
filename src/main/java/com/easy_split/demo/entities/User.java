@@ -34,7 +34,7 @@ public class User implements UserDetails {
 
     @OneToOne
     @JoinColumn(name = "person_id", unique = true)
-    private Person person;
+    private transient Person person;
 
     public User(String email, String password, Role role) {
         this.email = email;

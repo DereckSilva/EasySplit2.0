@@ -8,6 +8,7 @@ import com.easy_split.demo.dtos.requests.payments.CreatePaymentRequestDTO;
 import com.easy_split.demo.entities.Expense;
 import com.easy_split.demo.entities.Payments;
 import com.easy_split.demo.entities.Person;
+import com.easy_split.demo.entities.User;
 import com.easy_split.demo.enums.BankCode;
 import com.easy_split.demo.mappers.ExpenseMapper;
 import com.easy_split.demo.mappers.PaymentMapper;
@@ -65,8 +66,9 @@ public class ExpenseProcessingService {
     }
 
     public Person getPersonRelatedExpense(String person) {
-        if (person.matches("\\d+")) return this.personService.getPersonById(Integer.parseInt(person)).get();
-        return this.userService.getUserEmail(person).get().getPerson();
+        if (person.matches("\\d+")) return this.personService.getPersonById(Integer.parseInt(person));
+        User findPerson = this.userService.getUserEmail(person);
+        return findPerson.getPerson();
     }
 
     public boolean barCodeIsValid(String barCode, LocalDate maturity, Double price) {

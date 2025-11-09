@@ -1,5 +1,6 @@
 package com.easy_split.demo.controllers;
 
+import com.easy_split.demo.dtos.response.PersonResponseDTO;
 import com.easy_split.demo.entities.Person;
 import com.easy_split.demo.mappers.PersonMapper;
 import com.easy_split.demo.services.PersonService;
@@ -24,13 +25,8 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity findUser(@PathVariable int id) {
-        Optional<Person> person = this.personService.getPersonById(id);
-
-        Map<String, String> personNotFound = new HashMap<>();
-        personNotFound.put("message", "Person not found");
-
-        if (person.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(personNotFound);
-        return ResponseEntity.status(HttpStatus.FOUND).body(PersonMapper.toDTO(person.get()));
+    public ResponseEntity<PersonResponseDTO> findUser(@PathVariable int id) {
+        Person person = this.personService.getPersonById(id);
+        return ResponseEntity.status(HttpStatus.FOUND).body(PersonMapper.toDTO(person));
     }
 }

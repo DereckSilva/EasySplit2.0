@@ -20,11 +20,14 @@ import java.io.IOException;
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
-    @Autowired
-    public TokenService tokenService;
+    private final TokenService tokenService;
+    private final UserService userService;
 
     @Autowired
-    public UserService userService;
+    public SecurityFilter(TokenService tokenService, UserService userService) {
+        this.tokenService = tokenService;
+        this.userService = userService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -41,7 +44,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json;charset=utf-8");
-            response.getWriter().write("Token expired OR not informed");
+            response.getWriter().write(e.getMessage());
         }
     }
 

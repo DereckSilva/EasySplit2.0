@@ -6,6 +6,10 @@ import com.easy_split.demo.entities.Expense;
 
 public class ExpenseMapper {
 
+    private ExpenseMapper() {
+        throw new IllegalStateException("Classe utilitária, não pode ser instanciada.");
+    }
+
     public static Expense toEntity(CreateExpenseDTO expenseRequestDTO) {
         return new Expense(
                 expenseRequestDTO.name(),

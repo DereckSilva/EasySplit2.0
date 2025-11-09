@@ -8,6 +8,10 @@ import java.time.format.DateTimeFormatter;
 
 public class PersonMapper {
 
+    private PersonMapper() {
+        throw new IllegalStateException("Classe utilitária, não pode ser instanciada.");
+    }
+
     public static Person toEntity(PersonRequestDTO person) {
         return new Person(person.getName(), person.getBirthdate());
     }

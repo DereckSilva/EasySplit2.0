@@ -9,6 +9,10 @@ import com.easy_split.demo.enums.Role;
 
 public class UserMapper {
 
+    private UserMapper() {
+        throw new IllegalStateException("Classe utilitária, não pode ser instanciada.");
+    }
+
     public static User toEntity(CreateUserRequestDTO userRequestDTO) {
         return new User(userRequestDTO.getEmail(), userRequestDTO.getPassword(), Role.valueOf(userRequestDTO.getRole()));
     }
