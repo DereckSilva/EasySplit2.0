@@ -2,7 +2,6 @@ package com.easy_split.demo.services;
 
 import com.easy_split.demo.dtos.requests.expense.CreateExpenseDTO;
 import com.easy_split.demo.dtos.requests.expense.CreateExpenseRequestDTO;
-import com.easy_split.demo.dtos.requests.intermediaries.IntermediariesDTO;
 import com.easy_split.demo.dtos.requests.intermediaries.IntermediariesRequestDTO;
 import com.easy_split.demo.dtos.requests.payments.CreatePaymentRequestDTO;
 import com.easy_split.demo.entities.Expense;
@@ -10,7 +9,6 @@ import com.easy_split.demo.entities.Payments;
 import com.easy_split.demo.entities.Person;
 import com.easy_split.demo.entities.User;
 import com.easy_split.demo.enums.BankCode;
-import com.easy_split.demo.mappers.ExpenseMapper;
 import com.easy_split.demo.mappers.PaymentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,14 +52,16 @@ public class ExpenseProcessingService {
         Integer totalIntermediaries = createExpenseRequestDTO.getIntermediaries().size();
 
         return createExpenseRequestDTO.getIntermediaries().stream().map(intermediariesDTO -> new IntermediariesRequestDTO(
+                this.personService,
+                this.userService,
                 this.getPersonRelatedExpense(intermediariesDTO.getPerson()),
-                !intermediariesDTO.priceIsValid() ? createExpenseRequestDTO.getPrice() / totalIntermediaries : intermediariesDTO.getPrice()
+                !Boolean.getBoolean(intermediariesDTO.priceIsValid().toString()) ? createExpenseRequestDTO.getPrice() / totalIntermediaries : intermediariesDTO.getPrice()
         )).toList();
     }
 
 
     public Payments configPayment(Person person, Expense expense, CreatePaymentRequestDTO createPaymentRequestDTO) {
-        Payments payment = PaymentMapper.toEntity(createPaymentRequestDTO);
+        Payments payment = PaymentMapper.toEntity(person, expense, createPaymentRequestDTO);
         return this.paymentService.createPayment(person, expense, payment);
     }
 
@@ -75,7 +75,10 @@ public class ExpenseProcessingService {
 
         // realiza validacao para o banco de emissão do documento
         String bankCod = barCode.substring(0, 2);
-        String code = Arrays.stream(BankCode.values()).filter(bankCode -> bankCode.toString().equals(bankCod)).toString();
+        List<BankCode> code = Arrays.stream(BankCode.values())
+                .filter(bankCode -> bankCode.toString().equals(bankCod))
+                .toList();
+
         if (code.isEmpty()) return false;
 
         // validação para o tipo de moeda

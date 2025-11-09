@@ -14,11 +14,11 @@ import java.util.Date;
 public class TokenService {
 
     @Value("${api.security.token.secret}")
-    private String SECRET_KEY;
+    private String secretKey;
 
     public String generateToken(User user) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+            Algorithm algorithm = Algorithm.HMAC256(secretKey);
             return JWT.create()
                     .withIssuer("auth-easy-split-api") // who created token
                     .withSubject(user.getEmail())
@@ -33,7 +33,7 @@ public class TokenService {
 
     public String getSubjectFromToken(String token) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+            Algorithm algorithm = Algorithm.HMAC256(secretKey);
             return JWT.require(algorithm)
                     .withIssuer("auth-easy-split-api")
                     .build()

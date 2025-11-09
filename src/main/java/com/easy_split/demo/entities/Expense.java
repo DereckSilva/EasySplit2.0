@@ -1,7 +1,5 @@
 package com.easy_split.demo.entities;
 
-import com.easy_split.demo.dtos.requests.intermediaries.IntermediariesDTO;
-import com.easy_split.demo.dtos.requests.intermediaries.IntermediariesRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -44,10 +42,12 @@ public class Expense {
     private Boolean paid;
 
     @CreationTimestamp
-    private LocalDateTime created_at;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updated_at;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     private List<String> intermediaries;
 

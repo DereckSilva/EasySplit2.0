@@ -10,8 +10,12 @@ import java.util.Optional;
 
 public class FindExpenseValidation implements ConstraintValidator<FindExpense, String> {
 
+    private final ExpenseService expenseService;
+
     @Autowired
-    ExpenseService expenseService;
+    public FindExpenseValidation(ExpenseService expenseService) {
+        this.expenseService = expenseService;
+    }
 
     @Override
     public boolean isValid(String expenseIdent, ConstraintValidatorContext constraintValidatorContext) {

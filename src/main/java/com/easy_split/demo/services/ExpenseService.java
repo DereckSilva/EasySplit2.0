@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -56,7 +55,6 @@ public class ExpenseService {
 
     public void validExcelExpense(MultipartFile file)  throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
-        ArrayList<XSSFSheet> sheets = new ArrayList<>();
         for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
             for (int j = 0; j < workbook.getSheetAt(i).getPhysicalNumberOfRows(); j++) {
                 XSSFSheet sheet = workbook.getSheetAt(i);

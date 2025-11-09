@@ -1,7 +1,5 @@
 package com.easy_split.demo.enums;
 
-import java.util.List;
-
 public enum BankCode {
 
     BANCODOBRASIL("001"),
@@ -14,7 +12,7 @@ public enum BankCode {
     ITAU("341"),
     SICREDI("748");
 
-    String code;
+    final String code;
 
     BankCode(String code) {
         this.code = code;

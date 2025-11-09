@@ -3,7 +3,6 @@ package com.easy_split.demo.dtos.requests.expense;
 import com.easy_split.demo.dtos.requests.intermediaries.IntermediariesRequestDTO;
 import com.easy_split.demo.dtos.requests.payments.CreatePaymentRequestDTO;
 import com.easy_split.demo.validation.FindPerson;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -28,8 +27,7 @@ public class CreateExpenseRequestDTO {
 
     @AssertTrue(message = "Parcels must be more than 0 and must be a number")
     public boolean parcelsValid() {
-        if (parcels <= 0) return false;
-        return true;
+        return parcels > 0;
     }
 
     private Boolean intermediary;

@@ -11,7 +11,6 @@ public class AgeValidation implements ConstraintValidator<Age, LocalDateTime> {
         LocalDateTime currentDateTime = LocalDateTime.now();
 
         if (birthdate == null) return false;
-        if ((currentDateTime.getYear() - birthdate.getYear()) < 18) return false;
-        return true;
+        return (currentDateTime.getYear() - birthdate.getYear()) < 18;
     }
 }

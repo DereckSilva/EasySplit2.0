@@ -6,13 +6,13 @@ public enum Action {
     DELETE("DELETE"),
     SEARCH("SEARCH");
 
-    private String action;
+    final String actionField;
 
     Action(String action) {
-        this.action = action;
+        this.actionField = action;
     }
 
-    public String getAction() {
-        return this.action;
+    public String getActionField() {
+        return this.actionField;
     }
 }
