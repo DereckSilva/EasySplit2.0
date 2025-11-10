@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.InterruptedIOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,6 +62,11 @@ public class GlobalCustom {
     @ExceptionHandler(UtilClassException.class)
     public ResponseEntity<Map<String, Object>> utilClassException (UtilClassException exception) {
         return ResponseMapper.toResponseEntity(exception.getMessage(), HttpStatus.BAD_REQUEST, new HashMap<>());
+    }
+
+    @ExceptionHandler(InterruptedIOException.class)
+    public ResponseEntity<Map<String, Object>> interruptedIOException (InterruptedIOException exception) {
+        return ResponseMapper.toResponseEntity("Tempo de execução excedido", HttpStatus.INTERNAL_SERVER_ERROR, new HashMap<>());
     }
 
 }
